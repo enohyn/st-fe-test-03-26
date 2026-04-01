@@ -47,7 +47,7 @@ export function Pagination({ page, totalPages, total, limit, onPageChange, onLim
 
         {pages.map((p) =>
         <button key={p} onClick={() => onPageChange(p as number)}
-                className={`${btn} cursor-pointer ${p === page ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'text-[var(--text-main)]'}`}>
+                className={`${btn} cursor-pointer ${p === page ? 'bg-[var(--primary)] text-black border-[var(--primary)]' : 'text-[var(--text-main)]'}`}>
                 {p}
               </button>
         )}
