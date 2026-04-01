@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Murecho:wght@100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +24,7 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Murecho', 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--background);
   color: var(--text-main);
   min-height: 100vh;
@@ -96,4 +97,22 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #333954;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0%   { background-color: #e2e8f0; }
+  50%  { background-color: #f1f5f9; }
+  100% { background-color: #e2e8f0; }
+}
+
+.skeleton-line {
+  border-radius: 6px;
+  animation: shimmer 1.6s ease-in-out infinite;
+  background-color: #e2e8f0;
+}
+
+/* Spinner (used by Loader2 icons) */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
