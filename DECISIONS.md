@@ -15,10 +15,10 @@ Errors are caught by a class-based `ErrorBoundary` that auto-retries up to 2 tim
 *What did you intentionally leave out given the constraints of a take-home assignment? If you had more time, what would you prioritize next?*
 
 - **URL sync** — state lives in React, not the URL, so a refresh resets everything. This would be my first fix — it also makes the app shareable and browser-back-friendly.
-- **Tests** — skipped for time. `useDebounce`, the `ErrorBoundary` retry logic, and `buildPageWindows` are the obvious starting points.
+- **Quantity stepper on product cards** — there's no way for a consumer to actually add a product or select a quantity. A +/− stepper button on each `ProductCard` feeding into a cart context would be the natural next step to make this a proper shopping experience.
 - **Accessibility** — pagination buttons need `aria-label` attributes; the `'…'` ellipsis should be a `<span>`, not a `<button>` (see edge cases).
 
-Next priority: URL sync → ellipsis bug → tests → real API.
+Next priority: URL sync → quantity stepper → ellipsis bug → tests
 
 ## 3. AI Usage
 *How did you utilize AI tools (ChatGPT, Copilot, Cursor, etc.) during this assignment? Provide a brief summary of how they assisted you.*
