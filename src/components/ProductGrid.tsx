@@ -16,7 +16,7 @@ interface ProductGridProps {
 
 function SkeletonGrid({ limit }: { limit: number }) {
   return (
-    <div className="grid justify-center gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, 209px)' }}>
+    <div className="grid justify-around gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, 209px)' }}>
       {Array.from({ length: limit }, (_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
@@ -40,7 +40,7 @@ function Grid({ productsPromise, page, limit, onPageChange, onLimitChange }: Pro
   return (
     <>
       <Suspense fallback={<SkeletonGrid limit={limit} />}>
-        <div className="grid justify-center gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, 209px)' }}>
+        <div className="grid justify-around gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, 209px)' }}>
           {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
