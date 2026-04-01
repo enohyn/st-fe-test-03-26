@@ -1,82 +1,48 @@
-import { Search, Loader2 } from 'lucide-react';
-// import { api } from './services/api'; 
-// Use this to fetch data: api.fetchProducts(...)
+import { useCallback, useMemo, useState } from 'react';
+import { CategoryFilter } from './components/CategoryFilter';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { ProductGrid } from './components/ProductGrid';
+import { SearchInput } from './components/SearchInput';
+import { useProducts } from './hooks/useProducts';
+import { api } from './services/api';
 
 function App() {
+  const { page, limit, category, search, setPage, setLimit, setCategory, setSearch } = useProducts();
+  const [retryToken, setRetryToken] = useState(0);
+
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [setPage]);
+
+  const handleRetry = useCallback(() => setRetryToken(t => t + 1), []);
+
+  const productsPromise = useMemo(
+    () => api.fetchProducts({ page, limit, category: category || '', search: search || '' }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [page, limit, category, search, retryToken],
+  );
+
   return (
-    <div style={{ minHeight: '100vh', padding: '2rem' }}>
-      {/* Header Section */}
-      <header className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 600, marginBottom: '0.5rem' }}>
-          Premium Products
-        </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
+    <div className="min-h-screen p-8">
+      {/* Header */}
+      <header className="glass-panel p-8 mb-8">
+        <h1 className="text-3xl font-semibold mb-2">Premium Products</h1>
+        <p className="text-[var(--text-muted)]">
           Browse our collection. Handling the flaky API gracefully is part of the challenge.
         </p>
       </header>
 
-      {/* Controls Section */}
-      <section style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-        <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', padding: '0.75rem 1rem', flex: 1, maxWidth: '400px' }}>
-          <Search size={20} color="var(--text-muted)" style={{ marginRight: '0.75rem' }} />
-          <input 
-            type="text" 
-            placeholder="Search products..." 
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-main)',
-              outline: 'none',
-              width: '100%',
-              fontSize: '1rem'
-            }}
-          />
-        </div>
-        
-        <select 
-          className="glass-panel"
-          style={{
-            padding: '0.75rem 1rem',
-            color: 'var(--text-main)',
-            outline: 'none',
-            fontSize: '1rem',
-            cursor: 'pointer',
-            appearance: 'none',
-          }}
-        >
-          <option value="" style={{ background: 'var(--surface)' }}>All Categories</option>
-          <option value="electronics" style={{ background: 'var(--surface)' }}>Electronics</option>
-          <option value="clothing" style={{ background: 'var(--surface)' }}>Clothing</option>
-          <option value="home" style={{ background: 'var(--surface)' }}>Home</option>
-          <option value="outdoors" style={{ background: 'var(--surface)' }}>Outdoors</option>
-        </select>
+      {/* Controls */}
+      <section className="flex gap-4 mb-8">
+        <SearchInput onSearch={setSearch} />
+        <CategoryFilter selected={category} onChange={setCategory} />
       </section>
 
-      {/* Main Grid Placeholder */}
       <main>
-        {/* Placeholder state to visually guide candidate */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '4rem',
-          border: '1px dashed var(--border)',
-          borderRadius: '16px',
-        }}>
-           <Loader2 size={40} color="var(--primary)" className="spin" style={{ marginBottom: '1rem', animation: 'spin 2s linear infinite' }} />
-           <style>
-             {`
-               @keyframes spin {
-                 100% { transform: rotate(360deg); }
-               }
-             `}
-           </style>
-           <h2 style={{ marginBottom: '0.5rem' }}>Start Building Your Grid!</h2>
-           <p style={{ color: 'var(--text-muted)', textAlign: 'center', maxWidth: '500px' }}>
-             Use <code>src/services/api.ts</code> to fetch the products. Remember to build pagination and handle the network errors that the API frequently throws!
-           </p>
-        </div>
+        <ErrorBoundary resetKey={`${page}-${limit}-${category}-${search}`} onRetry={handleRetry}>
+          <ProductGrid productsPromise={productsPromise} page={page} limit={limit} onPageChange={handlePageChange} onLimitChange={setLimit} />
+        </ErrorBoundary>
       </main>
     </div>
   );
