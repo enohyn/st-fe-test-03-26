@@ -9,8 +9,8 @@ const extractProductName = (name: string) => {
   return name.replace(/\s+\S+$/, '');
 }
   return (
-    <article className="w-full group overflow-hidden flex flex-col h-full">
-      <div className="relative pt-[66.66%] overflow-hidden shrink-0 rounded-t-[6px] rounded-b-[4px]">
+    <article className="w-full group overflow-hidden flex flex-col h-[332px]">
+      <div className="relative h-[210px] overflow-hidden shrink-0 rounded-t-[6px] rounded-b-[4px]">
         <img
           src={product.imageUrl}
           alt={product.name}
@@ -19,7 +19,7 @@ const extractProductName = (name: string) => {
         />
       </div>
 
-      <div className="p-2 font-murecho bg-white flex-1 flex flex-col gap-2">
+      <div className="p-2 font-murecho bg-white flex flex-col gap-2">
         <span className='text-sm font-[#5A6573]'>
           {extractProductName(product.name)}
         </span>
